@@ -48,7 +48,7 @@ class Individual:
 			return child
 		return mate(self, other), mate(other, self)
 
-	
+		
 
 	# alguns helpers pro crossover
 
@@ -93,7 +93,6 @@ class Environment(object):
 		self.generation = 0
 		self.report = 0
 
-
 	def _makepopulation(self):
 		return [self.kind() for individual in range(self.size)]
 
@@ -108,17 +107,19 @@ class Environment(object):
 		self.population.sort()
 		self._crossover()
 		self.generation += 1
-		self.report()
+		print "="*70
+		print "geracao: ", self.generation
+		print "melhor da geracao: ", self.best
 
 	def _crossover(self):
 		next_population = [self.best.copy()]
-		while len(next_population) < self.size():
+		while len(next_population) < self.size:
 			mate1 = self._select()
 			if random.random() < self.crossover_rate:
 				mate2 = self._select()
 				offspring = mate1.crossover(mate2)
 			else:
-				offspring = mate1.copy()
+				offspring = [mate1.copy()]
 			for individual in offspring:
 				self._mutate(individual)
 				individual.evaluate(self.optimum)
@@ -128,6 +129,11 @@ class Environment(object):
 	def _select(self):
 		"sobrescrever para usar com o método de seleção preferido"
 		return self._tournament()
+
+	def _mutate(self, individual):
+		for gene in range(individual.length):
+			if random.random() < self.mutation_rate:
+				individual.mutate(gene)
 
 	def _tournament(self, size=8, choosebest=0.90):
 		competidors = [random.choice(self.population) for i in range(size)]
