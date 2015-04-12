@@ -4,7 +4,9 @@ import random
 
 MAXIMIZE, MINIMIZE = 11, 12
 
-class Individual(object):
+class Individual:
+	chromossome = None
+	score = None
 	alleles = (0,1)
 	length = 30
 	separator = ''

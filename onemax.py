@@ -6,6 +6,9 @@ import genetic
 
 class OneMax(genetic.Individual):
 	optimization = genetic.MAXIMIZE
+	def sum(seq):
+		def add(x, y): return x+y
+		return reduce(add, seq, 0)
 	def evaluate(self, optimum=None):
 		self.score = sum(self.chromossome)
 	def mutate(self, gene):
@@ -13,5 +16,5 @@ class OneMax(genetic.Individual):
 
 
 	if __name__ == "__main__":
-		env = genetic.Environment(OneMax, maxgenerations=100, optimum=30)
+		env = genetic.Environment(maxgenerations=100, optimum=30)
 		env.run()
