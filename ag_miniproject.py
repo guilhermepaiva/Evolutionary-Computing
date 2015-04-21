@@ -35,6 +35,22 @@ def calculate_fitness(param):
 	result = 1 / float((calculate_function(param) + 1))
 	return result
 
+def best_fitness_population(population):
+	min = 100000.0
+	for individual in population:
+		if calculate_fitness(individual) < min:
+			min = calculate_fitness(individual)
+	return min
+
+
+def tournament(size, choose_best, population):
+	competidors = [random.choice(population) for i in range(size)]
+	competidors.sort()
+	if random.random() < choose_best:
+		return competidors[0]
+	else:
+		return random.choice(competidors[1:])
+
 
 if __name__ == "__main__":
 	alleles = (0,1)
@@ -44,12 +60,8 @@ if __name__ == "__main__":
 	print "Populacao: "
 	print all_population
 	print "\n\n\n"
-	for individual in all_population:
-		print individual
-		print convert_to_decimal(individual)
-		print "Fitness"
-		print calculate_fitness(convert_to_decimal(individual))
-		print "\n"
+	print "Torneio"
+	print tournament(8, 0.90, all_population)
 
 	
 
