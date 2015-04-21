@@ -27,6 +27,14 @@ def convert_to_decimal(binary_number):
 	str_of_interest = str1 = ''.join(str(e) for e in binary_number)
 	return int(str_of_interest, 2)
 
+def calculate_function(param):
+	y = param*param
+	return y
+
+def calculate_fitness(param):
+	result = 1 / float((calculate_function(param) + 1))
+	return result
+
 
 if __name__ == "__main__":
 	alleles = (0,1)
@@ -39,6 +47,8 @@ if __name__ == "__main__":
 	for individual in all_population:
 		print individual
 		print convert_to_decimal(individual)
+		print "Fitness"
+		print calculate_fitness(convert_to_decimal(individual))
 		print "\n"
 
 	
