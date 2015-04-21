@@ -16,14 +16,16 @@ def pick_pivots():
 	right = random.randrange(left, length_chromosome-1)
 	return left, right
 
-# um crossover simples - rever aqui
+# um crossover simples
 def onepoint(mate1, mate2):
 	left, right= pick_pivots()
 	child1 = mate1[:left] + mate2[left:]
 	child2 = mate2[:left] + mate1[left:]
 	return child1, child2
 
-
+def convert_to_decimal(binary_number):
+	str_of_interest = str1 = ''.join(str(e) for e in binary_number)
+	return int(str_of_interest, 2)
 
 
 if __name__ == "__main__":
@@ -34,7 +36,10 @@ if __name__ == "__main__":
 	print "Populacao: "
 	print all_population
 	print "\n\n\n"
-	print onepoint(all_population[0], all_population[1])
+	for individual in all_population:
+		print individual
+		print convert_to_decimal(individual)
+		print "\n"
 
 	
 
