@@ -20,7 +20,7 @@ def pick_pivots():
 def onepoint(mate1, mate2):
 	left, right= pick_pivots()
 	child1 = mate1[:left] + mate2[left:]
-	child2 = mate1[left:] + mate2[:left]
+	child2 = mate2[:left] + mate1[left:]
 	return child1, child2
 
 
