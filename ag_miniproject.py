@@ -11,6 +11,20 @@ def mutate(gene, alleles, chromosome):
 def makepopulation(population_size, alleles, length_chromosome):
 	return [makechromosome(alleles, length_chromosome) for individual in range(population_size)]
 
+def pick_pivots():
+	left = random.randrange(1, length_chromosome-2)
+	right = random.randrange(left, length_chromosome-1)
+	return left, right
+
+# um crossover simples - rever aqui
+def onepoint(mate1, mate2):
+	left, right= pick_pivots()
+	child1 = mate1[:left] + mate2[left:]
+	child2 = mate1[left:] + mate2[:left]
+	return child1, child2
+
+
+
 
 if __name__ == "__main__":
 	alleles = (0,1)
@@ -19,5 +33,8 @@ if __name__ == "__main__":
 	all_population = makepopulation(population_size, alleles, length_chromosome)
 	print "Populacao: "
 	print all_population
+	print "\n\n\n"
+	print onepoint(all_population[0], all_population[1])
+
 	
 
