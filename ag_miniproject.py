@@ -38,8 +38,9 @@ def calculate_fitness(param):
 def best_fitness_population(population):
 	min = 100000.0
 	for individual in population:
-		if calculate_fitness(individual) < min:
-			min = calculate_fitness(individual)
+		if calculate_fitness(convert_to_decimal(individual)) < min:
+			min = calculate_fitness(convert_to_decimal(individual))
+			test = individual
 	return min
 
 
@@ -60,8 +61,8 @@ if __name__ == "__main__":
 	print "Populacao: "
 	print all_population
 	print "\n\n\n"
-	print "Torneio"
-	print tournament(8, 0.90, all_population)
+	print "Melhor Fitness da Populacao"
+	print best_fitness_population(all_population)
 
 	
 
