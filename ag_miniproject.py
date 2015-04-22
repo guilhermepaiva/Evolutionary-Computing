@@ -40,7 +40,9 @@ def best_fitness_population(population):
 	for individual in population:
 		if calculate_fitness(convert_to_decimal(individual)) < min:
 			min = calculate_fitness(convert_to_decimal(individual))
-			test = individual
+			best_individual = individual
+	print "Melhor Individuo"
+	print best_individual
 	return min
 
 
@@ -53,16 +55,52 @@ def tournament(size, choose_best, population):
 		return random.choice(competidors[1:])
 
 
+def generate_new_population(population):
+	next_population = []
+	while (len(next_population) < len(population)):
+		mate1 = tournament(8, 0.90, population)
+		mate2 = tournament(8, 0.90, population)
+		child1, child2 = onepoint(mate1, mate2)
+		mutate(3, (0,1),child1)
+		next_population.append(child1)
+		next_population.append(child2)
+	return next_population
+
+
+def step(population):
+	population.sort()
+	new_population = generate_new_population(population)
+	return new_population
+
+def goal(generation, max_generation, desirable_fitness, best_individual):
+	desirable_fitness = 1
+	return generation > max_generation or desirable_fitness >= best_fitness_population
+
+def run(population):
+	generation = 0
+	max_generation = 100
+	best_individual = 100
+	desirable_fitness = 0
+	while (not goal(generation, max_generation, desirable_fitness, best_individual)):
+		new_population = step(population)
+		print "Populacao: "
+		print new_population
+		print "\n\n"
+		best_individual = best_fitness_population(new_population)
+		print "Melhor Individuo da Populacao (fitness)"
+		print best_individual
+
+		generation += 1
+
+
+
 if __name__ == "__main__":
 	alleles = (0,1)
 	length_chromosome = 5
 	population_size = 10
 	all_population = makepopulation(population_size, alleles, length_chromosome)
-	print "Populacao: "
-	print all_population
-	print "\n\n\n"
-	print "Melhor Fitness da Populacao"
-	print best_fitness_population(all_population)
+	run(all_population)	
 
+	
 	
 
