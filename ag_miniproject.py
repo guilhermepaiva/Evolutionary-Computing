@@ -36,13 +36,16 @@ def calculate_fitness(param):
 	return result
 
 def best_fitness_population(population):
-	min = 100000.0
+	min = 0
 	for individual in population:
-		if calculate_fitness(convert_to_decimal(individual)) < min:
+		if calculate_fitness(convert_to_decimal(individual)) >= min:
+			print "Fenotipo"
+			print individual
+			print "Genotipo"
+			print convert_to_decimal(individual)
+			print "\n"
 			min = calculate_fitness(convert_to_decimal(individual))
 			best_individual = individual
-	print "Melhor Individuo"
-	print best_individual
 	return min
 
 
@@ -87,9 +90,8 @@ def run(population):
 		print new_population
 		print "\n\n"
 		best_individual = best_fitness_population(new_population)
-		print "Melhor Individuo da Populacao (fitness)"
+		print "Melhor fitness da populacao"
 		print best_individual
-
 		generation += 1
 
 
