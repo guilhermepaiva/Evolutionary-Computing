@@ -12,6 +12,7 @@ PROBABILITY_CROSSOVER = 0.3
 sum_fitness = []
 mean_fitness = []
 list_mean_fitness_100_generations = []
+param_exploration = False
 
 def makechromosome():
 	length_chromosome = 31
@@ -80,12 +81,19 @@ def get_mean_fitness(population):
 def mutate(chromosome):
 	threshold = 0.1
 	learning_tax = 1.0/math.sqrt(len(chromosome)-1)
-	normal_random = np.random.normal(0,1)
+
+	# if param_exploration:
+	# 	normal_random = np.random.uniform(0, 10)
+	# else:
+	# 	normal_random = np.random.normal(0,1)
+	normal_random = np.random.normal(0,1)	
+	
 	next_sigma = chromosome[-1]*math.exp(learning_tax*normal_random)
 	if next_sigma < threshold:
 		next_sigma = threshold
 	new_individual = [chromosome[i] + next_sigma*np.random.normal(0,1) for i in range(len(chromosome)-1)]
 	new_individual.append(next_sigma)
+	
 	return new_individual
 
 
@@ -106,6 +114,11 @@ def check_bounds(chromosome):
 
 def crossover_intermadiate(mate1, mate2):
 	chromosome = [((mate1[i] + mate2[i]) / 2.0) for i in range(len(mate1))]
+
+	if param_exploration:
+		#chromosome[-1] = np.random.uniform(0,100)
+		chromosome[-1] = 10000.0
+
 	if check_bounds(chromosome) == True:
 		return chromosome
 	else:
@@ -115,6 +128,14 @@ def crossover_random_point(mate1, mate2):
 	left, right = pick_pivots()
 	child1 = mate1[:left] + mate2[left:]
 	child2 = mate2[:left] + mate1[left:]
+
+	if param_exploration:
+		# child1[-1] = np.random.uniform(0,100)
+		# child2[-1] = np.random.uniform(0,100)
+
+		child1[-1] = 10000.0
+		child2[-1] = 10000.0
+
 	if calculate_fitness(child1) > calculate_fitness(child2):
 		return child1
 	else:
@@ -173,8 +194,14 @@ if __name__ == "__main__":
 		current_generation += 1
 		my_population = next_generation(my_population)
 		fitness_medio = get_mean_fitness(my_population)
+		
+		#decide exploration or not
 		if check_overfitting(current_generation):
-			print "Tem que explorar - Geracao", str(current_generation)
+			param_exploration = True
+		else:
+			param_exploration = False
+		#end decife exploration
+		
 	print "Curent Generation: ", str(current_generation)
 	best_individual = get_best_individual(my_population)
 	
