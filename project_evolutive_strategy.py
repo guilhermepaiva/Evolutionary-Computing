@@ -115,9 +115,9 @@ def check_bounds(chromosome):
 def crossover_intermadiate(mate1, mate2):
 	chromosome = [((mate1[i] + mate2[i]) / 2.0) for i in range(len(mate1))]
 
-	if param_exploration:
-		#chromosome[-1] = np.random.uniform(0,100)
-		chromosome[-1] = 10000.0
+	# if param_exploration:
+	# 	#chromosome[-1] = np.random.uniform(0,100)
+	# 	chromosome[-1] = 10000.0
 
 	if check_bounds(chromosome) == True:
 		return chromosome
@@ -129,12 +129,12 @@ def crossover_random_point(mate1, mate2):
 	child1 = mate1[:left] + mate2[left:]
 	child2 = mate2[:left] + mate1[left:]
 
-	if param_exploration:
-		# child1[-1] = np.random.uniform(0,100)
-		# child2[-1] = np.random.uniform(0,100)
+	# if param_exploration:
+	# 	# child1[-1] = np.random.uniform(0,100)
+	# 	# child2[-1] = np.random.uniform(0,100)
 
-		child1[-1] = 10000.0
-		child2[-1] = 10000.0
+	# 	child1[-1] = 10000.0
+	# 	child2[-1] = 10000.0
 
 	if calculate_fitness(child1) > calculate_fitness(child2):
 		return child1
@@ -173,6 +173,8 @@ def next_generation(population):
 			offspring.append(individual)
 		if random.uniform(0.0, 1.0) <= PROBABILITY_CROSSOVER:
 			individual = crossover(individual,population[random.randint(0,len(population)-1)])
+			if param_exploration:
+				individual[-1] = np.random.uniform(2,3)
 			offspring.append(individual)
 
 	offspring = sorted(offspring, key=lambda x:calculate_fitness(x))
@@ -188,7 +190,7 @@ def get_best_individual(population):
 
 if __name__ == "__main__":
 	my_population = makepopulation(30)
-	max_generations = 10000
+	max_generations = 100000
 	current_generation = 0	
 	while (not check_fitness(my_population) and current_generation < max_generations):
 		current_generation += 1
